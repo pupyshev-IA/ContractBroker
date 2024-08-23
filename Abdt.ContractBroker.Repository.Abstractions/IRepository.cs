@@ -6,7 +6,7 @@
         /// Добавляет в хранилище новый элемент.
         /// </summary>
         /// <param name="item"></param>
-        /// <returns>Возвращает добавленный элемент</returns>
+        /// <returns></returns>
         Task Add(T item);
 
         /// <summary>

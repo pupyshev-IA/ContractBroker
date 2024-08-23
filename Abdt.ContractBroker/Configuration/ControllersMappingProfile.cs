@@ -2,7 +2,6 @@
 using Abdt.ContractBroker.DTO;
 using AutoMapper;
 using MongoDB.Bson;
-using System.Text.Json;
 
 namespace Abdt.ContractBroker.Configuration
 {
@@ -12,19 +11,13 @@ namespace Abdt.ContractBroker.Configuration
         {
             CreateMap<ContractDto, Contract>()
                 .ForMember(d => d.FullAssemblyName, opt => opt.MapFrom(s => s.FullAssemblyName))
-                .ForMember(d => d.BsonData, opt => opt.MapFrom(s => BsonDocument.Parse(s.JsonData.ToString())));
+                .ForMember(d => d.BsonData, opt => opt.MapFrom(s => BsonDocument.Parse(s.JsonData)));
 
             CreateMap<Contract, ContractDto>()
                 .ForMember(d => d.FullAssemblyName, opt => opt.MapFrom(s => s.FullAssemblyName))
-                .ForMember(d => d.JsonData, opt => opt.MapFrom(s => ConvertBsonToJsonElement(s.BsonData)));
+                .ForMember(d => d.JsonData, opt => opt.MapFrom(s => ConvertBsonToJsonString(s.BsonData)));
         }
 
-        private JsonElement ConvertBsonToJsonElement(BsonDocument bsonDoc)
-        {
-            var jsonString = bsonDoc.ToJson();
-            var jsonElement = JsonDocument.Parse(jsonString).RootElement.Clone();
-
-            return jsonElement;
-        }
+        private string ConvertBsonToJsonString(BsonDocument bsonDoc) => bsonDoc.ToJson();
     }
 }
