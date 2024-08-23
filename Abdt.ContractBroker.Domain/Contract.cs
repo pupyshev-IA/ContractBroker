@@ -10,6 +10,6 @@ namespace Abdt.ContractBroker.Domain
         public string FullAssemblyName { get; set; } = string.Empty;
 
         [BsonElement("data")]
-        public string JsonData { get; set; } = string.Empty;
+        public BsonDocument? BsonData { get; set; }
     }
 }

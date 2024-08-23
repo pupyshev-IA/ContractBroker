@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  abdt.contractbroker:
+    image: ${DOCKER_REGISTRY-}abdtcontractbroker
+    container_name: contract-broker
+    build:
+      context: .
+      dockerfile: Abdt.ContractBroker/Dockerfile
+    ports:
+      - "5000:5000"
+    expose:
+      - 5000
+    depends_on:
+      - mongodb
+    
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    expose:
+      - 27017
+    volumes:
+      - C:\Users\PupyshevIA\source\MongoDb:/data/db

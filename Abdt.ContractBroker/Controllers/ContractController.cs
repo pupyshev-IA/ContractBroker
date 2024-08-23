@@ -1,5 +1,7 @@
 ﻿using Abdt.ContractBroker.Domain;
+using Abdt.ContractBroker.DTO;
 using Abdt.ContractBroker.Repository.Abstractions;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Abdt.ContractBroker.Controllers
@@ -9,20 +11,21 @@ namespace Abdt.ContractBroker.Controllers
     public class ContractController : ControllerBase
     {
         private readonly IRepository<Contract> _repository;
+        private readonly IMapper _mapper;
 
-        public ContractController(IRepository<Contract> repository)
+        public ContractController(IRepository<Contract> repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpPost]
         [Route("add")]
-        public async Task<IActionResult> SaveContract([FromBody] Contract contract)
+        public async Task<IActionResult> SaveContract([FromBody] ContractDto contractRequest)
         {
-            if (contract is null)
-                return BadRequest("Invalid data");
-
+            var contract = _mapper.Map<Contract>(contractRequest);
             await _repository.Add(contract);
+
             return Ok();
         }
 
@@ -30,11 +33,12 @@ namespace Abdt.ContractBroker.Controllers
         [Route("get/{assemblyName}")]
         public async Task<IActionResult> GetContract([FromRoute] string assemblyName)
         {
-            if (string.IsNullOrWhiteSpace(assemblyName))
-                return BadRequest("Invalid data");
-
             var contract = await _repository.GetByKey(assemblyName);
-            return Ok(contract);
+                if (contract == null)
+                    return NotFound();
+
+            var contractResponse = _mapper.Map<ContractDto>(contract);
+            return Ok(contractResponse);
         }
     }
 }
