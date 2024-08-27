@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Abdt.ContractBroker.Controllers
 {
     [ApiController]
-    [Route("api/v1/contract")]
+    [Route("api/v1/contracts")]
     public class ContractController : ControllerBase
     {
         private readonly IRepository<Contract> _repository;
