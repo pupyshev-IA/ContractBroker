@@ -7,7 +7,7 @@ namespace Abdt.ContractBroker.Domain
     {
         [BsonId]
         [BsonRepresentation(BsonType.String)]
-        public string FullAssemblyName { get; set; } = string.Empty;
+        public string AssemblyName { get; set; } = string.Empty;
 
         [BsonElement("data")]
         public BsonDocument? BsonData { get; set; }

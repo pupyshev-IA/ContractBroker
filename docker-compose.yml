@@ -11,6 +11,8 @@ services:
       - "5000:5000"
     expose:
       - 5000
+    networks:
+      - abtd_network
     depends_on:
       - mongodb
     

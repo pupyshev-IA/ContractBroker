@@ -21,7 +21,7 @@ namespace Abdt.ContractBroker.Repository
         {
             ArgumentNullException.ThrowIfNull(item, nameof(item));
 
-            var filter = Builders<Contract>.Filter.Eq(x => x.FullAssemblyName, item.FullAssemblyName);
+            var filter = Builders<Contract>.Filter.Eq(x => x.AssemblyName, item.AssemblyName);
             var options = new ReplaceOptions { IsUpsert = true};
 
             await _contractCollection.ReplaceOneAsync(filter, item, options);
@@ -32,7 +32,7 @@ namespace Abdt.ContractBroker.Repository
             if (string.IsNullOrWhiteSpace(key))
                 throw new ArgumentException(string.Format(EmptySpaceErrorMessage, nameof(key)));
 
-            return await _contractCollection.Find(item => item.FullAssemblyName == key).FirstOrDefaultAsync();
+            return await _contractCollection.Find(item => item.AssemblyName == key).FirstOrDefaultAsync();
         }
     }
 }
